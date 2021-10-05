@@ -1,0 +1,151 @@
+create table studentapplication(
+application_id number primary key,
+student_id number  references student(student_id),
+scheme_id number  references scheme(scheme_id),
+religion varchar2(10) ,
+community varchar2(10),
+father_name varchar2(10) not null,
+mother_name varchar2(10) not null,
+income number not null,
+course varchar2(10) not null,
+tenth_percentage number not null,
+twelvth_percentage number not null,
+disablility varchar2(5) not null,
+applied_date date not null,
+status varchar2(20),
+institute_accepted_date date,
+state_accepte_ddate date,
+ministry_accepted_date date 
+ );
+
+insert into studentapplication values(1,1,11,'HINDU','SC','VINOD','SARALA',300000,'CSE',90,87,'NA','01-Oct-2021','ACCEPTED','03-Oct-2021','07-Oct-2021','10-Oct-2021');
+insert into studentapplication values(2,2,22,'HINDU','OC','SANDDEP','APARNA',650000,'CSE',94,89,'NA','05-Oct-2021','ACCEPTED','07-Oct-2021','09-Oct-2021','10-Oct-2021');
+insert into studentapplication values(3,3,22,'HINDU','BC','SRIVAS','LAXMI',450000,'CSE',95,90,'NA','15-Oct-2021','ACCEPTED','20-Oct-2021','23-Oct-2021','27-Oct-2021');
+insert into studentapplication values(4,4,33,'HINDU','OC','KRISHNA','VYSHNAVI',550000,'CSE',90,72,'NA','17-Oct-2021','ACCEPTED','23-Oct-2021','25-Oct-2021','29-Oct-2021');
+insert into studentapplication values(5,5,11,'HINDU','BC','SURYA','SUMA',750000,'ECE',95,68,'NA','07-Oct-2021','REJECTED','09-Oct-2021','13-Oct-2021',NULL);
+insert into studentapplication values(6,5,22,'HINDU','BC','SURYA','SUMA',750000,'ECE',95,68,'NA','07-Oct-2021','ACCEPTEDBYSTATE','09-Oct-2021','13-Oct-2021',NULL);
+insert into studentapplication values(8,2,33,'HINDU','OC','SANDDEP','APARNA',650000,'CSE',94,89,'NA','09-Oct-2021','ACCEPTEDBYINST','07-Oct-2021',null,null);
+insert into studentapplication values(7,1,33,'Christian','SC','VINOD','SARALA',300000,'CSE',90,87,'NA','07-Oct-2021',null,null,null,null);
+insert into studentapplication values(9,5,22,'HINDU','BC','SURYA','SUMA',750000,'ECE',95,68,'NA','07-Oct-2021',null,null,null,NULL);
+
+create table ministry(
+ministry_id number primary key,
+password varchar2(10) not null,
+officer_name varchar2(10) not null,
+mobile_number varchar2(10) unique,
+email_id varchar2(20) unique
+);
+
+insert into ministry values(1,'vj123','GANDHI','9834674532','vijay@gmail.com');
+
+create table statenodalofficer(
+state_name varchar2(15) primary key,
+password varchar2(10) not null,
+officer_name varchar2(20) not null,
+mobile_number varchar2(10) unique,
+email_id varchar2(20) unique
+);
+
+insert into statenodalofficer values('Telangana','TS1234','RAVI','9131002255','ravi@gmail.com');
+insert into statenodalofficer values('Maharastra','MH123','GAGAN','9866954565','gagan@gmail.com');
+
+CREATE TABLE scheme(
+    scheme_id number(4) PRIMARY KEY,
+    scheme_name varchar2(20) UNIQUE,
+    last_date_to_apply DATE NOT NULL,
+    amount number(7,2) NOT NULL
+);
+INSERT INTO scheme VALUES (11, 'NTSE', '20-NOV-2021', 30000);
+INSERT INTO scheme VALUES (22, 'Pragathi', '25-NOV-2021', 25000);
+INSERT INTO scheme VALUES (33, 'Post-Matric', '21-NOV-2021', 25000);
+
+
+CREATE TABLE instituteapplication(
+institute_code      number(3) primary key,
+state_name          VARCHAR2(15) REFERENCES statenodalofficer (state_name),
+institute_name      VARCHAR2(20) Not Null unique,
+city               varchar2(10) not null,
+district           varchar2(10) not null,
+pin_code           number not null,
+DISE_code          number not null unique,
+university_name    varchar2(20) Not Null,
+password           varchar2(10) not null,
+principal 	   varchar2(10) not null,
+telephone          varchar2(10) unique Not Null,
+applied_date       Date Not Null,
+status               varchar2(20) ,
+state_accepted_date           Date ,
+ministry_accepted_date	 Date 
+);
+INSERT INTO instituteapplication VALUES(101 , 'Telangana', 'VNR','HYDERABAD' , 'HYDERABAD' , 501001 , 1115 , 'JNTU', 'VNR' , 'HARI', '9876543210' , '01-Sep-2021' ,	'ACCEPTED' , '03-Sep-2021' , '05-Sep-2021');
+INSERT INTO instituteapplication VALUES(102 , 'Telangana' , 'MLRIT' , 'HYDERABAD' , 'HYDERABAD' ,501001 , 1161 , 'JNTU' , 'MLRIT' , 'RANI' , '9258764110' ,	'07-Oct-2021' ,	'REJECTED' , '13-Oct-2021',NULL);	
+INSERT INTO instituteapplication VALUES(103 , 'Maharastra' , 'VASAVI' ,	'MUMBAI' , 'MUMBAI' , 503001 , 1111 , 'XYZ' , 'VASAVI' , 'RISHI' , '9100553322' ,	'03-Sep-2021' ,	'ACCEPTED' , '07-Oct-2021' , '13-Oct-2021');
+INSERT INTO instituteapplication VALUES(104 , 'Maharastra' , 'OU' ,	'MUMBAI' , 'MUMBAI' , 503001 , 1121 , 'XYZ' , 'OU' , 'ABHI' , '9103253322' ,	'04-Sep-2021' ,	'ACCEPTEDBYSTATE' , '07-Oct-2021' , NULL);
+INSERT INTO instituteapplication VALUES(106 , 'Maharastra' , 'CVRAMAN' ,	'MUMBAI' , 'MUMBAI' , 503001 , 1124 , 'XYZ' , 'CVRAMAN' , 'ADII' , '9142253322' ,	'09-Oct-2021' ,	null , null , NULL);
+
+create table student (
+student_id number primary key,
+institute_code number references instituteapplication(institute_code),
+student_name varchar(15) not null,
+dob date not null,
+gender varchar2(1) not null,
+mobile_number varchar2(10) unique,
+email_id varchar(20) unique,
+state  varchar2(10) not null,
+district  varchar2(10) not null,
+aadhar_number varchar2(12) unique,
+bank_ifsc_code varchar2(20) not null,
+bank_account_number varchar2(20) not null,
+bank_name varchar2(20) not null,
+bank_balance number not null,
+password varchar2(20) not null
+);
+
+insert into student values (1, 101, 'Mohan','18-Dec-1997' ,'M', '1234567891', 'mohan@gmail.com', 'Telangana', 'Nizamabad', '123456789123', 'HDFC1234', '102345678', 'HDFC' ,5000, 'mohan');
+insert into student values (2, 101, 'Ramya', '02-Aug-1998' , 'F', '3456789112', 'ramya@gmail.com', 'Telangana', 'Nizamabad', '123455789123', 'AXIS1234', '11234567', 'Axis' ,7000, 'ramya');
+insert into student values (3, 103, 'Haritha', '12-Dec-1998' , 'F','8912345678', 'haritha@gmail.com', 'Tamilnadu', 'Chennai', '123456788123', 'HDFC5432', '102345345', 'HDFC' ,9000, 'haritha');
+insert into student values (4, 103, 'Raghu', '03-Feb-1999' , 'M', '8813456789', 'raghu@gmail.com', 'Tamilnadu', 'Chennai', '723456789123', 'HDFC3456', '102345876', 'HDFC' ,7000, 'raghu');
+insert into student values (5, 101, 'Suvarna', '12-Oct-1998' , 'F', '9123456456', 'suvarna@gmail.com', 'Maharastra', 'Pune', '823456789123', 'UNBC3456', '102343333', 'Union' ,5000, 'suvarna');
+
+
+pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ProjectGladiator</groupId>
+  <artifactId>ProjectGladiator</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <release>14</release>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
+persistence.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="ProjectGladiator">
+		<class>com.lti.layer2.model.Instituteapplication</class>
+		<class>com.lti.layer2.model.Ministry</class>
+		<class>com.lti.layer2.model.Scheme</class>
+		<class>com.lti.layer2.model.Statenodalofficer</class>
+		<class>com.lti.layer2.model.Student</class>
+		<class>com.lti.layer2.model.Studentapplication</class>
+	</persistence-unit>
+</persistence>
+
+
